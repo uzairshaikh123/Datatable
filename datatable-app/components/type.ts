@@ -11,7 +11,7 @@ export interface Headers {
     sortable?: Boolean;
     caption?: String;
     headers: Headers;
-    rows: String | Number [];
+    rows: String[] | Number [];
     pagination?:Boolean;
     handlepageination:(page:number)=>void;
     handlesearch:(query:string)=>void

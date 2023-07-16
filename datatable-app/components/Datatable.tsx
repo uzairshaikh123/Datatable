@@ -106,7 +106,7 @@ export default function Datatable({
             </Tr>
           </Thead>
           <Tbody>
-            {rowarr?.map((el, i) => {
+            {rowarr?.map((el:any, i:number) => {
               return (
                 <Tr key={el?.id}>
                   <Td>{el?.id} hours ago</Td>
@@ -151,6 +151,7 @@ export default function Datatable({
           <Button isDisabled={page == 1} onClick={() => handlepage(-1)}>
             Prev
           </Button>
+          <Button>{page}</Button>
           <Button isDisabled={page == 3} onClick={() => handlepage(1)}>
             Next
           </Button>
