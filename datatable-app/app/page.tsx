@@ -6,33 +6,48 @@ import axios from "axios";
 import Datatable from "@/components/Datatable";
 import { ChakraProvider } from "@chakra-ui/react";
 import { useEffect } from "react";
-const url =`https://jsonplaceholder.typicode.com/users?_page=1&_limit=4`
+const url = ``;
 
-async function getData() {
-  const res = await axios.get(url)
+async function getData(page: number, query: string) {
+  console.log("getdata", page);
+  let url = `https://jsonplaceholder.typicode.com/users?_page=${page}&_limit=4`;
+  if (query.length > 0) {
+    url = `https://jsonplaceholder.typicode.com/users?q=${query}&_page=${page}&_limit=4`;
+  }
+  const res = await axios.get(url);
   // The return value is *not* serialized
   // You can return Date, Map, Set, etc.
- 
+
   // Recommendation: handle errors
   if (!res) {
     // This will activate the closest `error.js` Error Boundary
-    throw new Error('Failed to fetch data')
+    throw new Error("Failed to fetch data");
   }
- 
-  return res
+
+  return res;
 }
 
-
 export default function Home() {
-  const [rows ,setrows]=useState([])
-  useEffect(()=>{
-    async function myapp(){
-      const data = await getData()
-      setrows(data.data)
+  const [rows, setrows] = useState([]);
+  const [page, setpage] = useState(1);
+  const [query, setquery] = useState("");
+  const handlepageination = (p: number) => {
+    setpage(page + p);
+    // console.log("han", p, page);
+  };
+  const handlesearch = (q: string) => {
+    // console.log(q);
+    setquery(q);
+  };
 
+  useEffect(() => {
+    async function myapp() {
+      const data = await getData(page, query);
+      setrows(data.data);
     }
-    myapp()
-  },[])
+    myapp();
+  }, [page, query]);
+
   const headers = {
     Timestamp: "Timestamp",
     Purchase_Id: "Purchase Id",
@@ -43,31 +58,19 @@ export default function Home() {
     Select: "Select",
   };
 
-  const handlepageination =()=>{
-
-  }
-  // const { colorMode, toggleColorMode } = useColorMode();
-  
-
-  // const rows = ["","",""];
   return (
     <main>
       <ChakraProvider>
-        
-          <Datatable
-            pagination={true}
-            sortable={true}
-            caption="Bookings"
-            headers={headers}
-            rows={rows}
-            handlepageination={handlepageination}
-          />
-  
+        <Datatable
+          pagination={true}
+          sortable={true}
+          caption="Bookings"
+          headers={headers}
+          rows={rows}
+          handlepageination={handlepageination}
+          handlesearch={handlesearch}
+        />
       </ChakraProvider>
     </main>
   );
 }
-
-
-
- 
