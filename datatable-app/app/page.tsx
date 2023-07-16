@@ -6,7 +6,7 @@ import axios from "axios";
 import Datatable from "@/components/Datatable";
 import { ChakraProvider } from "@chakra-ui/react";
 import { useEffect } from "react";
-const url =`https://jsonplaceholder.typicode.com/users`
+const url =`https://jsonplaceholder.typicode.com/users?_page=1&_limit=4`
 
 async function getData() {
   const res = await axios.get(url)
@@ -42,6 +42,10 @@ export default function Home() {
     Status: "Status",
     Select: "Select",
   };
+
+  const handlepageination =()=>{
+
+  }
   // const { colorMode, toggleColorMode } = useColorMode();
   
 
@@ -51,11 +55,12 @@ export default function Home() {
       <ChakraProvider>
         
           <Datatable
-            
+            pagination={true}
             sortable={true}
             caption="Bookings"
             headers={headers}
             rows={rows}
+            handlepageination={handlepageination}
           />
   
       </ChakraProvider>
